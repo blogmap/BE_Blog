@@ -1,21 +1,34 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Unique, OneToMany, JoinColumn, ManyToMany, JoinTable } from "typeorm"
-
+import Post from "./Post"
 @Entity()
 @Unique('UNIQUE_USERNAME', ['username'])
 @Unique('UNIQUE_MAIL', ['mail'])
 
 export default class User {
     @PrimaryGeneratedColumn()
-    id!: number  
+    id: number  
 
     @Column()
-    username!: string
+    username: string
 
     @Column()
-    mail!: string
+    mail: string
 
     @Column()
-    password!: string
+    fullname: string
+
+    @Column()
+    dateOfBirth: Date
+
+    @Column()
+    password: string
+
+    @OneToMany(() => Post, (post) => post.user, { onDelete: "CASCADE"})
+    posts: Array<Post>
+
+    @ManyToMany(() => Post, (post) => post.upVotedUsers, { onDelete: "CASCADE"})
+    @JoinTable()
+    upVotedPost: Array<Post>
 }
 
 module.exports = User
