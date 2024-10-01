@@ -33,13 +33,13 @@ AppDataSource.initialize()
     // // Middleware xác thực
     // app.use(isAuth);
 
-    // const authedRouterPath = path.resolve(__dirname, "routes", "authed");
-    // const authedRouter: Array<string> = fs.readdirSync(authedRouterPath);
+    const authedRouterPath = path.resolve(__dirname, "routes", "authed");
+    const authedRouter: Array<string> = fs.readdirSync(authedRouterPath);
 
-    // for (const router of authedRouter) {
-    //   const req_router = require(`./routes/authed/${router}/index`);
-    //   app.use(`/${router}`, req_router);
-    // }
+    for (const router of authedRouter) {
+      const req_router = require(`./routes/authed/${router}/index`);
+      app.use(`/${router}`, req_router);
+    }
     console.log('ok')
     app.listen(4000, () => {
       console.log("Server is running on port 4000");
