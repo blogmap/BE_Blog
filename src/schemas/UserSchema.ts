@@ -3,9 +3,9 @@ import {z} from 'zod'
 const UserValidation = z.object({
     id: z.string().regex(/^\d+$/).transform(Number).optional(),
     username: z.string(),
-    mail: z.string(),
+    mail: z.string().email(),
     fullname: z.string(),
-    dateOfBirth: z.string().transform(Date),
+    dateOfBirth: z.string().transform((val) => new Date(val)),
     password: z.string(),
 })
 

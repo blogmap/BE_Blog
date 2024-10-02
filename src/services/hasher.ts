@@ -1,15 +1,24 @@
-import crypto from 'crypto';
+import { hashSync, compareSync, genSaltSync } from "bcrypt";
+const dotenv = require('dotenv');
+dotenv.config();
 
-function hashPassword(plainText: string): { salt: string; passwordHashed: string } {
-  const salt: string = crypto.randomBytes(32).toString('hex');
-  const hashObject = crypto.createHash('sha256');
-  const passwordHashed: string = hashObject.update(plainText + salt).digest('hex');
-  return { salt, passwordHashed };
+export function hash(x: string): string {
+  try {
+    const saltRound = parseInt(process.env.SALT_ROUND ?? "10", 10);
+    // console.log('SALT_ROUND:', saltRound); 
+
+    const salt = genSaltSync(saltRound);
+    // console.log('SALT', salt);
+    const hashedPassword = hashSync(x, salt); 
+    
+    // console.log('hashedPassword:', hashedPassword); 
+    return hashedPassword;
+  } catch (error) {
+    console.error('Error hashing password:', error); 
+    throw error; 
+  }
 }
 
-function hashPasswordSalt(salt: string, plainText: string): string {
-  const hashObject = crypto.createHash('sha256');
-  return hashObject.update(plainText + salt).digest('hex');
+export function compare(text: string, digest: string): boolean {
+  return compareSync(text, digest);
 }
-
-export { hashPassword, hashPasswordSalt };
