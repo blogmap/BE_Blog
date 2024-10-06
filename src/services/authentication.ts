@@ -15,8 +15,8 @@ class UserIdentityService {
     this.JWT_SECRET = process.env.JWT_SECRET as Secret;
   }
 
-  async sign(user: User): Promise<string> {
-    return jwt.sign({ id: user.id }, this.JWT_SECRET, { expiresIn: '1d', algorithm: 'HS256' });
+  async sign(userID: String): Promise<string> {
+    return jwt.sign({userID}, this.JWT_SECRET, { expiresIn: '1d', algorithm: 'HS256' });
   }
 
   verify(token: string): string | JwtPayload {
