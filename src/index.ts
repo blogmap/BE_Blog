@@ -5,6 +5,7 @@ import cors from 'cors';
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import { AppDataSource } from "./database/config";
+import { authenticateJWT } from "./middlewares/authenticateJWT";
 // import { isAuth } from "./middlewares/isAuth";
 // import auth from "./routes/public/auth";
 
@@ -28,10 +29,7 @@ AppDataSource.initialize()
       app.use(`/${router}`, req_router);
     }
     
-    // app.use("/auth", auth);
-
-    // // Middleware xác thực
-    // app.use(isAuth);
+    app.use(authenticateJWT)
 
     const authedRouterPath = path.resolve(__dirname, "routes", "authed");
     const authedRouter: Array<string> = fs.readdirSync(authedRouterPath);
