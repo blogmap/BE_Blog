@@ -23,8 +23,8 @@ class UserIdentityService {
     return jwt.verify(token, this.JWT_SECRET);
   }
 
-  assignUserRequestContext(user: User, request: Request): void {
-    (request as any).user = user;
+  assignUserRequestContext(user: User, req: Request): void {
+    (req as any).user = user;
   }
 }
 

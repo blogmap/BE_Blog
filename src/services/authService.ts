@@ -63,7 +63,6 @@ export const forgotPassword_Ser = async (data: {email: string; }) => {
       return new Error('User not found');
   }
 
-  // Chỉ truyền ID của người dùng để tạo token
   const token = await UserIdentityService.sign(user.id.toString());
   const time = new Date(Date.now() + 10 * 60 * 1000); 
 

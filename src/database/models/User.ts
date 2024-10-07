@@ -31,7 +31,7 @@ export default class User {
 
     @Column({ type: "timestamp", nullable: true })
     forgetPasswordTokenTime: Date | null;
-
+    
     @OneToMany(() => Post, (post) => post.user, { onDelete: "CASCADE"})
     posts: Array<Post>
 
