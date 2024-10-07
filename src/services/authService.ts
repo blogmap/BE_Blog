@@ -69,6 +69,7 @@ export const forgotPassword_Ser = async (data: {email: string; }) => {
 
   user.forgetPasswordToken = token; 
   user.forgetPasswordTokenTime = time; 
+  console.log(user)
   await userRepository.save(user);
 
   const resetUrl = `${process.env.BASE_URL_FE}/apis/auth/resetPassword?token=${token}`;
@@ -120,4 +121,29 @@ html: `
       console.error('Failed to send email:', error);
       return { message: 'Failed to send email', error };
   }
+}
+
+export const resetPassword_Ser = async (data: { token: string, newPassword: string}) => {
+  const { token, newPassword } = data;
+    console.log(token, newPassword)
+    const user = await userRepository.findOne({ where: { forgetPasswordToken: token } });
+    console.log("tets",user)
+    if (!user) {
+        throw new Error('Invalid or expired token');
+    }
+    if (!user.forgetPasswordTokenTime) {
+    throw new Error('Token has expired 1');
+    }
+
+    const currentTime = new Date();
+    if (user.forgetPasswordTokenTime < currentTime) {
+    throw new Error('Token has expired');
+    }
+
+    user.password = hash(newPassword);
+    user.forgetPasswordToken = null; 
+    user.forgetPasswordTokenTime = null; 
+    await userRepository.save(user);
+
+    return { message: 'Password has been reset successfully' };
 }

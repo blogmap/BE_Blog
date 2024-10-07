@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { registerUser, loginUser, forgotPassword_Ser } from "../services/authService";
+import { registerUser, loginUser, forgotPassword_Ser, resetPassword_Ser } from "../services/authService";
 
 export const register = async (req: Request, res: Response) => {
     try {
@@ -46,3 +46,23 @@ export const forgotPassword = async (req: Request, res: Response) => {
     }
 }
 
+export const resetPassword = async (req: Request, res: Response) => {
+    try {
+        const token = req.query.token; 
+        const { newPassword } = req.body; 
+        
+        // Kiểm tra xem token có phải là string không
+        if (typeof token !== 'string') {
+            return res.status(400).json({ message: 'Invalid token' });
+        }
+
+        const result = await resetPassword_Ser({ token, newPassword }); 
+        res.status(200).json({ message: 'Reset Password Success', data: result });
+    } catch (e: unknown) {
+        if (e instanceof Error) {
+            res.status(400).send(e.message);
+        } else {
+            res.status(500).send('Error');
+        }
+    }
+}

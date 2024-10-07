@@ -26,11 +26,11 @@ export default class User {
     @Column({ nullable: true })
     role: string; 
 
-    @Column({ nullable: true })
-    forgetPasswordToken: string; 
+    @Column({ type: 'varchar', nullable: true })
+    forgetPasswordToken: string | null; 
 
     @Column({ type: "timestamp", nullable: true })
-    forgetPasswordTokenTime: Date;
+    forgetPasswordTokenTime: Date | null;
 
     @OneToMany(() => Post, (post) => post.user, { onDelete: "CASCADE"})
     posts: Array<Post>
