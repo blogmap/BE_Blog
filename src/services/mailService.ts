@@ -16,8 +16,8 @@ const mailService = {
         
         const transporter: Transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
-            port: Number(process.env.SMTP_PORT), // Đảm bảo cổng là số
-            secure: process.env.SMTP_SECURE === 'true', // Chọn secure tùy thuộc vào biến môi trường
+            port: Number(process.env.SMTP_PORT), 
+            secure: process.env.SMTP_SECURE === 'true', 
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.PASSWORD_USER,

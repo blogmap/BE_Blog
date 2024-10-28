@@ -20,24 +20,15 @@ app.get("/hello", (req, res) => {
 
 AppDataSource.initialize()
 .then(() => {
-    // Public router before middleware
-    const publicRouterPath = path.resolve(__dirname, "routes", "public");
-    const publicRouter: Array<string> = fs.readdirSync(publicRouterPath);
+    const RouterPath = path.resolve(__dirname, "modules");
+    const Routers: Array<string> = fs.readdirSync(RouterPath);
 
-    for (const router of publicRouter) {
-      const req_router = require(`./routes/public/${router}/index`);
+    for (const router of Routers) {
+      const req_router = require(`./modules/${router}/index`);
       app.use(`/${router}`, req_router);
     }
-    
-    app.use(authenticateJWT)
 
-    const authedRouterPath = path.resolve(__dirname, "routes", "authed");
-    const authedRouter: Array<string> = fs.readdirSync(authedRouterPath);
 
-    for (const router of authedRouter) {
-      const req_router = require(`./routes/authed/${router}/index`);
-      app.use(`/${router}`, req_router);
-    }
     console.log('ok')
     app.listen(4000, () => {
       console.log("Server is running on port 4000");

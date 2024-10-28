@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 const userRouter = Router();
 
 userRouter.get("/", async (req: Request, res: Response) => {
-   res.send(req.user)
+   res.send("okkk")
 });
 
 
