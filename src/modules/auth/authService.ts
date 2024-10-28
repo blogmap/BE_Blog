@@ -1,10 +1,10 @@
-import { AppDataSource } from "../database/config";
-import User from "../database/models/User";
-import { hash } from "./hasher";
-import UserSchema from "../schemas/UserSchema";
-import { compare } from "../services/hasher";
-import { mailService } from "./mailService";
-import UserIdentityService  from "../services/authentication";
+import { AppDataSource } from "../../database/config";
+import User from "../../database/models/User";
+import { hash } from "../../services/hasher";
+import UserSchema from "../../schemas/UserSchema";
+import { compare } from "../../services/hasher";
+import { mailService } from "../../services/mailService";
+import UserIdentityService  from "../../services/authentication";
 import exp from "constants";
 
 const dotenv = require('dotenv');

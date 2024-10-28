@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Unique, OneToMany, JoinColumn, ManyToMany, JoinTable } from "typeorm"
 import Post from "./Post"
+import Role from "./Role"
 @Entity()
 @Unique('UNIQUE_USERNAME', ['username'])
 @Unique('UNIQUE_MAIL', ['mail'])
@@ -23,8 +24,13 @@ export default class User {
     @Column()
     password: string
 
-    @Column({ nullable: true })
-    role: string; 
+    @ManyToMany(() => Role, role => role.users , {onDelete:'CASCADE'})
+    @JoinTable({
+        name: 'user_roles',
+        joinColumn:{name: 'user_id' , referencedColumnName: 'id' },
+        inverseJoinColumn:{name:'role_id', referencedColumnName: 'id' },
+    })
+    roles?: Role[];
 
     @Column({ type: 'varchar', nullable: true })
     forgetPasswordToken: string | null; 
