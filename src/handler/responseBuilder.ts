@@ -42,6 +42,7 @@ function InternalServerError(
   });
 }
 
+
 const ResponseBuilder = {
   NotFound,
   BadRequest,

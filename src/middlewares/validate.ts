@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { ZodSchema, ZodError } from 'zod';  // Import ZodError
-import { BadRequestError } from '../handler/error.response';
-
+import ResponseBuilder from '../handler/responseBuilder';
 const validate = (schema: ZodSchema<any>) => {
     return (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -12,7 +11,7 @@ const validate = (schema: ZodSchema<any>) => {
                 const messages = error.errors.map(err => err.message); 
                 return res.status(400).json({ errors: messages });
             } else {
-                throw new BadRequestError('Invalid request');
+                return ResponseBuilder.BadRequest(res, 'Invalid request');
             }
         }
     };
