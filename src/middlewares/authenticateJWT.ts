@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import UserIdentityService from "../services/authentication";
-import ResponseBuilder from "../services/responseBuilder";
+import ResponseBuilder from "../handler/responseBuilder";
 
 interface JwtPayload {
   userID: string;

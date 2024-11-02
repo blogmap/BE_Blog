@@ -12,7 +12,7 @@ const userRepository = AppDataSource.getRepository(User);
 
 authRouter.post("/register", validate(UserSchema.UserValidation), asyncHandler(register))
 
-authRouter.post("/login",validate(UserSchema.UserAccountValidation), asyncHandler(login))
+authRouter.post("/login", validate(UserSchema.UserAccountValidation), asyncHandler(login))
 
 authRouter.post("/forgot-password", forgotPassword)
 
