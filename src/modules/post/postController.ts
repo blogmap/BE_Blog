@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createPost_Ser, deletePost_Ser, unDownVotePost_Ser, unUpVotePost_Ser, upDownVotePost_Ser, upUpVotePost_Ser } from "./postService";
+import { createPost_Ser, deletePost_Ser, unDownVotePost_Ser, unUpVotePost_Ser, upDownVotePost_Ser, upUpVotePost_Ser, getAllPost_Ser } from "./postService";
 import ResponseBuilder from "../../handler/responseBuilder";
 
 export const createPost = async (req: Request, res: Response) => {
@@ -100,3 +100,20 @@ export const upUpVotePost = async (req: Request, res: Response) => {
         }
     }
 }
+
+export const getAllPost = async (req: Request, res: Response) => {
+    try {
+        const page = parseInt(req.query.page as string) || 1; 
+        const pageSize = parseInt(req.query.pageSize as string) || 10; 
+
+        const allPost = await getAllPost_Ser({ res, page, pageSize });
+        return ResponseBuilder.Ok(res, allPost);
+    } catch (e: unknown) {
+        if (e instanceof Error) {
+            return ResponseBuilder.BadRequest(res, e.message);
+        } else {
+            return ResponseBuilder.InternalServerError(res, 'Unexpected error');
+        }
+    }
+};
+

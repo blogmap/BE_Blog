@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Unique, OneToMany, JoinColumn, ManyToMany, JoinTable, ManyToOne } from "typeorm"
 import User from "./User"
 import { userInfo } from "os"
-
+import Comment from "./Comment"
 
 @Entity()
 export default class Post {
@@ -28,6 +28,9 @@ export default class Post {
 
     @ManyToMany(() => User, (user)=> user.downVotedPost, { onDelete: "CASCADE"}) 
     downVotedUsers: Array<User>
+
+    @OneToMany(() => Comment, (comment) => comment.post, { onDelete: "CASCADE" })
+    comments: Array<Comment>;
 }
 
 module.exports = Post

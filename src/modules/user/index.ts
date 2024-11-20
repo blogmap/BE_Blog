@@ -1,11 +1,17 @@
 import { Router } from "express";
-import { Request, Response, NextFunction } from 'express';
-const userRouter = Router();
+import validate from '../../middlewares/validate';
+import PostSchema from "../../schemas/PostSchema";
+import asyncHandler from "../../middlewares/asyncHandle";
+// import {  } from "../user/userController"
+import { authenticateJWT, canAccessBy } from "../../middlewares/authenticateJWT";
+const postRouter = Router();
 
-userRouter.get("/", async (req: Request, res: Response) => {
-   res.send("okkk")
+postRouter.post("/", async (req, res) => {
+   res.send("postHome")
 });
 
+// postRouter.post("/createPost", asyncHandler(getAllUser))
 
-export default userRouter;
-module.exports = userRouter;
+
+export default postRouter;
+module.exports = postRouter;

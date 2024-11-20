@@ -17,5 +17,6 @@ authRouter.post("/login", validate(UserSchema.UserAccountValidation), asyncHandl
 authRouter.post("/forgot-password", forgotPassword)
 
 authRouter.post("/reset-password", resetPassword)
+
 export default authRouter;
 module.exports = authRouter;
