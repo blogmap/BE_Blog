@@ -25,6 +25,7 @@ export function authenticateJWT(req: Request, res: Response, next: NextFunction)
       console.log(payload)
       if (payload) {
         req.user = { id: payload.userID }; 
+        console.log('next')
         return next();
       }
     }
