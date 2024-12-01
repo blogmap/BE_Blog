@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import  Role from './Role';
 
 @Entity('permissions')
@@ -10,7 +10,8 @@ export default class Permission {
   name!: string; 
 
   @ManyToMany(() => Role, role => role.permissions)
-  roles?: Role[];
+  @JoinTable()  
+  roles: Array<Role>;
 
 }
 module.exports = Permission

@@ -1,6 +1,7 @@
 import { AppDataSource } from "../../database/config";
 import Post from "../../database/models/Post"; // Nhập mô hình Post
 import User from "../../database/models/User"; // Nhập mô hình User
+import Comment from "../../database/models/Comment";
 import ResponseBuilder from "../../handler/responseBuilder";
 import MessageCodes from "../../../src/messageCodes"
 const postRepository = AppDataSource.getRepository(Post);
@@ -129,3 +130,39 @@ export const upUpVotePost_Ser = async (data: any) => {
         return ResponseBuilder.InternalServerError(data.res, err);
     }
 }
+
+export const getAllPost_Ser = async (data: { res: Response, page: number, pageSize: number }) => {
+    try {
+        const { page, pageSize } = data;
+
+        const skip = (page - 1) * pageSize;
+        const take = pageSize;
+
+        const [allPost, total] = await AppDataSource.getRepository(Post).findAndCount({
+            relations: {
+                user: true,
+                comments: {
+                    user: true
+                }
+            },
+            skip, 
+            take 
+        });
+
+        if (allPost.length === 0) {
+            return ResponseBuilder.NotFound(data.res);
+        }
+
+        const result = {
+            total, 
+            page, 
+            pageSize, 
+            totalPages: Math.ceil(total / pageSize), 
+            data: allPost 
+        };
+
+        return result;
+    } catch (err) {
+        return ResponseBuilder.InternalServerError(data.res, err);
+    }
+};

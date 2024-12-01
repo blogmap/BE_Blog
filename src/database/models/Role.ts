@@ -9,16 +9,11 @@ export default class Role{
   @Column({type: "varchar" , length : 100 , unique: true})
   name!: string   
 
-  @ManyToMany(() => Permission , permissions => permissions.roles)
-  @JoinTable({
-    name: 'role_permissions',
-    joinColumn: {name: 'role_id', referencedColumnName: 'id'},
-    inverseJoinColumn: {name: 'permission_id', referencedColumnName: 'id'}
-  })  
-  permissions?: Permission[];
+  @ManyToMany(() => Permission , permissions => permissions.roles, {onDelete:'CASCADE'})
+  permissions: Array<Permission>;
   
   @ManyToMany(() => User, user => user.roles)
-  users?: User[];
+  users: Array<User>;
   
 }
 
