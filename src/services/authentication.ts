@@ -1,8 +1,5 @@
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import { Request } from 'express';
-
-dotenv.config();
 
 interface User {
   id: string;
@@ -16,7 +13,10 @@ class UserIdentityService {
   }
 
   async sign(userID: String): Promise<string> {
-    return jwt.sign({userID}, this.JWT_SECRET, { expiresIn: '1d', algorithm: 'HS256' });
+    return jwt.sign({ userID }, this.JWT_SECRET, {
+      expiresIn: '1d',
+      algorithm: 'HS256',
+    });
   }
 
   verify(token: string): string | JwtPayload {
