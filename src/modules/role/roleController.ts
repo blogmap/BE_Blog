@@ -3,7 +3,7 @@ import { createRole_Ser, getRoleOfUser_Ser, createPermission_Ser, assignRoleToUs
 import ResponseBuilder from "../../handler/responseBuilder";
 
 export const getRoleOfUser = async (req: Request, res: Response) => {
-    try {
+    try { 
         const userID = req.user?.id;
         
         const user = await getRoleOfUser_Ser({ userId: userID, res }); 
