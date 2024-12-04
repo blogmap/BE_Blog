@@ -1,12 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Unique, OneToMany, JoinColumn, ManyToMany, JoinTable } from "typeorm"
-import Post from "./Post"
 import Role from "./Role"
 import Comment from "./Comment"
+import Post from "./Post"
 @Entity()
 @Unique('UNIQUE_USERNAME', ['username'])
 @Unique('UNIQUE_MAIL', ['mail'])
 
-export default class User {
+export default class User implements IUser {
     @PrimaryGeneratedColumn()
     id: number  
 
@@ -25,9 +25,9 @@ export default class User {
     @Column()
     password: string
 
-    @ManyToMany(() => Role, role => role.users , {onDelete:'CASCADE'})
+    @ManyToMany("Role", "users", {onDelete:'CASCADE'})
     @JoinTable()
-    roles: Array<Role>;
+    roles: Array<IRole>;
 
     @Column({ type: 'varchar', nullable: true })
     forgetPasswordToken: string | null; 
@@ -35,21 +35,19 @@ export default class User {
     @Column({ type: "timestamp", nullable: true })
     forgetPasswordTokenTime: Date | null;
     
-    @OneToMany(() => Post, (post) => post.user, { onDelete: "CASCADE"})
-    posts: Array<Post> 
+    @OneToMany("Post", "user", { onDelete: "CASCADE"})
+    posts: Array<IPost> 
 
-    @ManyToMany(() => Post, (post) => post.upVotedUsers, { onDelete: "CASCADE"})
+    @ManyToMany("Post", "upVotedUsers", { onDelete: "CASCADE"})
     @JoinTable()
-    upVotedPost: Array<Post>
+    upVotedPost: Array<IPost>
 
-    @ManyToMany(() => Post, (post) => post.downVotedUsers, { onDelete: "CASCADE"})
+    @ManyToMany("Post", "downVotedUsers", { onDelete: "CASCADE"})
     @JoinTable()
-    downVotedPost: Array<Post>
+    downVotedPost: Array<IPost>
 
-    @OneToMany(() => Comment, (comment) => comment.user, { onDelete: "CASCADE" })
-    comments: Array<Comment>;
+    @OneToMany("Comment", "user", { onDelete: "CASCADE" })
+    comments: Array<IComment>;
 
 
 }
-
-module.exports = User

@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTabl
 import  Role from './Role';
 
 @Entity('permissions')
-export default class Permission {
+export default class Permission implements IPermission {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -11,7 +11,6 @@ export default class Permission {
 
   @ManyToMany(() => Role, role => role.permissions)
   @JoinTable()  
-  roles: Array<Role>;
+  roles: Array<IRole>;
 
 }
-module.exports = Permission

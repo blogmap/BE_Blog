@@ -4,12 +4,12 @@ import { userInfo } from "os"
 import Comment from "./Comment"
 
 @Entity()
-export default class Post {
+export default class Post implements IPost {
     @PrimaryGeneratedColumn()
     id: number  
 
-    @ManyToOne(()=> User, (user) => user.posts, { onDelete: "CASCADE"})
-    user: User
+    @ManyToOne("User", "posts", { onDelete: "CASCADE"})
+    user: IUser
 
     @Column()
     title: string
@@ -23,14 +23,12 @@ export default class Post {
     @Column({default: 0})
     downvote: number
 
-    @ManyToMany(()=> User, (user)=> user.upVotedPost, { onDelete: "CASCADE"})
-    upVotedUsers:Array<User>
+    @ManyToMany("User", "upVotedPost", { onDelete: "CASCADE"})
+    upVotedUsers:Array<IUser>
 
-    @ManyToMany(() => User, (user)=> user.downVotedPost, { onDelete: "CASCADE"}) 
-    downVotedUsers: Array<User>
+    @ManyToMany("User", "downVotedPost", { onDelete: "CASCADE"}) 
+    downVotedUsers: Array<IUser>
 
-    @OneToMany(() => Comment, (comment) => comment.post, { onDelete: "CASCADE" })
-    comments: Array<Comment>;
+    @OneToMany("Comment", "post", { onDelete: "CASCADE" })
+    comments: Array<IComment>;
 }
-
-module.exports = Post

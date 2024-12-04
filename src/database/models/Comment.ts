@@ -3,7 +3,7 @@ import User from './User';
 import Post from './Post';
 
 @Entity()
-export default class Comment {
+export default class Comment implements IComment {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -18,11 +18,10 @@ export default class Comment {
     @CreateDateColumn()
     createdAt: Date;
 
-    @ManyToOne(() => User, (user) => user.comments, { onDelete: 'CASCADE' })
-    user: User;
+    @ManyToOne("User", "comments", { onDelete: 'CASCADE' })
+    user: IUser;
 
-    @ManyToOne(() => Post, (post) => post.comments, { onDelete: 'CASCADE' })
-    post: Post;
+    @ManyToOne("Post", "comments", { onDelete: 'CASCADE' })
+    post: IPost;
 }
 
-module.exports = Comment;

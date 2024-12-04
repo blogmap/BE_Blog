@@ -14,4 +14,4 @@ userRouter.get("/:id",authenticateJWT, asyncHandler(getUser))
 
 
 export default userRouter;
-module.exports = userRouter;
+

@@ -17,4 +17,4 @@ commentRouter.post("/updateComment/:id",authenticateJWT, asyncHandler(updateComm
 commentRouter.post("/deleteComment/:id", authenticateJWT, asyncHandler(deleteComment))
 
 export default commentRouter;
-module.exports = commentRouter;
+

@@ -21,4 +21,4 @@ roleRouter.post("/assign", asyncHandler(assignRoleToUser))
 roleRouter.post("/assign/permission", asyncHandler(assignPermissionToRole))
 
 export default roleRouter;
-module.exports = roleRouter;
+

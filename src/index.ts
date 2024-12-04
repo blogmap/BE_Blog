@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import { AppDataSource } from './database/config';
 import { authenticateJWT } from './middlewares/authenticateJWT';
 import dotenv from 'dotenv';
+import { routers } from './modules';
 // import { isAuth } from "./middlewares/isAuth";
 // import auth from "./routes/public/auth";
 
@@ -23,12 +24,9 @@ app.get('/hello', (req, res) => {
 
 AppDataSource.initialize()
   .then(() => {
-    const RouterPath = path.resolve(__dirname, 'modules');
-    const Routers: Array<string> = fs.readdirSync(RouterPath);
 
-    for (const router of Routers) {
-      const req_router = require(`./modules/${router}/index`);
-      app.use(`/${router}`, req_router);
+    for (const key in routers) {
+      app.use(`/${key}`, routers[key]);
     }
 
     console.log('ok');

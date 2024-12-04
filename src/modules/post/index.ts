@@ -24,4 +24,4 @@ postRouter.post("/upUpVotePost/:id", authenticateJWT, asyncHandler(upUpVotePost)
 postRouter.get("/home", asyncHandler(getAllPost))
 
 export default postRouter;
-module.exports = postRouter;
+

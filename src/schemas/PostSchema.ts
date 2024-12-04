@@ -14,4 +14,4 @@ const PostSchema = {
 };
 
 export default PostSchema;
-module.exports = PostSchema;
+
