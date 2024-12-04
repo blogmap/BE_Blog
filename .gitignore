@@ -25,3 +25,6 @@ coverage/
 
 # Miscellaneous
 package-lock.json
+
+# Thêm tên tệp hoặc thư mục bạn muốn Git bỏ qua
+et --hard HEAD@{1}
