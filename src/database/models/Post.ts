@@ -32,5 +32,3 @@ export default class Post {
     @OneToMany(() => Comment, (comment) => comment.post, { onDelete: "CASCADE" })
     comments: Array<Comment>;
 }
-
-module.exports = Post

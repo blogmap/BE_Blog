@@ -25,4 +25,3 @@ export default class Comment {
     post: Post;
 }
 
-module.exports = Comment;

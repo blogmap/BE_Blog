@@ -17,7 +17,6 @@ export default class Role{
   
 }
 
-module.exports = Role
 
 
 

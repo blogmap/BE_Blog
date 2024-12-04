@@ -14,4 +14,3 @@ export default class Permission {
   roles: Array<Role>;
 
 }
-module.exports = Permission
