@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import http from 'http'
 import fs from 'fs';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -9,7 +10,7 @@ import { authenticateJWT } from './middlewares/authenticateJWT';
 import dotenv from 'dotenv';
 // import { isAuth } from "./middlewares/isAuth";
 // import auth from "./routes/public/auth";
-
+import { initWebSocket } from './websocket' 
 dotenv.config();
 
 const app = express();
@@ -20,6 +21,10 @@ app.use(bodyParser.json());
 app.get('/hello', (req, res) => {
   res.json({ message: 'world' });
 });
+
+
+const server = http.createServer(app)
+const io = initWebSocket(server)
 
 AppDataSource.initialize()
   .then(() => {
@@ -32,7 +37,7 @@ AppDataSource.initialize()
     }
 
     console.log('ok');
-    app.listen(4000, () => {
+    server.listen(4000, () => {
       console.log('Server is running on port 4000');
     });
   })
