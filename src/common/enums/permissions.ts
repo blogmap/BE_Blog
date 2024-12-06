@@ -10,7 +10,10 @@ export enum PermissionEnum{
         CanGetAllUser = 'GetAllUser',
         CanUpdateUser = 'UpdateUser',
         CanDeleteUser = 'DeleteUser',
-        Test = 'test'
+        Test = 'test',
+
+        CanEditProfile = 'EditProfile',
+        CanCreatePost = 'CreatePost',
     }
     
     

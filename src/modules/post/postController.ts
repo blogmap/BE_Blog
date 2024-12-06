@@ -15,7 +15,7 @@ export const createPost = async (req: Request, res: Response) => {
             return ResponseBuilder.BadRequest(res, e.message);
         } else {
             return ResponseBuilder.InternalServerError(res, 'Unexpected error');
-        }
+        } 
     }
 };
 
