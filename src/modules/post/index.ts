@@ -4,13 +4,15 @@ import PostSchema from "../../schemas/PostSchema";
 import asyncHandler from "../../middlewares/asyncHandle";
 import { createPost, deletePost, unDownVotePost, unUpVotePost, upDownVotePost, upUpVotePost, getAllPost } from "../post/postController"
 import { authenticateJWT, canAccessBy } from "../../middlewares/authenticateJWT";
+import { PermissionEnum } from "../../common/enums/permissions"
+
 const postRouter = Router();
 
 postRouter.post("/", async (req, res) => {
    res.send("postHome")
 });
 
-postRouter.post("/createPost",authenticateJWT, canAccessBy('UpdateUser'),validate(PostSchema.CreatePostValidation), asyncHandler(createPost))
+postRouter.post("/createPost",authenticateJWT, canAccessBy(PermissionEnum.CanCreatePost), validate(PostSchema.CreatePostValidation), asyncHandler(createPost))
 postRouter.post("/deletePost/:id",authenticateJWT, asyncHandler(deletePost))
 
 // vote
