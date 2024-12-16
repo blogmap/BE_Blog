@@ -19,16 +19,6 @@ services:
     container_name: my-blog-app
     ports:
       - "6000:4000" 
-    environment:
-      # DB_HOST: ${DB_HOST_SERVER} #postgresNew
-      # DB_USER: ${DB_USER_SERVER} #postgres
-      # DB_PASS: ${DB_PASS_SERVER} #hothanhtienqb123
-      # DB_NAME: ${DB_NAME_SEVER}  #mydatabase
-      # JWT_SECRET: ${JWT_SECRET}    #12345
-      # SALT_ROUND: ${SALT_ROUND}
-      # CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
-      # CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
-      # CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
     env_file: ".env"
     depends_on:
       - postgresNew 
