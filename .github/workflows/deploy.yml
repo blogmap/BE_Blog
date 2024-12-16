@@ -35,10 +35,10 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          username: tien
+          password: Tien123123
           script: |
             cd /BE_Blog
-            docker-compose pull  # Lấy image mới nhất từ Docker Hub
-            docker-compose down  # Dừng container hiện tại
-            docker-compose up -d --build  # Khởi động container với image mới
+            docker-compose pull 
+            docker-compose down 
+            docker-compose up -d --build 
