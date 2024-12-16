@@ -31,18 +31,24 @@ jobs:
           push: true
           tags: hothanhtien/my-blog-app:latest
 
-      - name: Deploy with Docker Compose
+      - name: Deploy with Docker (Pull, Stop, Run)
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: tien
           password: Tien123123
           script: |
+            # Navigate to the project directory
             cd BE_Blog
-            docker compose pull 
-            docker compose down 
-            docker compose up -d --build 
-      - name: Run start.sh script
-        run: |
-          chmod +x start.sh  
-          ./start.sh 
+            
+            # Pull the latest image from Docker Hub
+            docker pull hothanhtien/my-blog-app:latest
+
+            # Stop the currently running container
+            docker stop my-blog-app
+
+            # Remove the old container (optional)
+            docker rm my-blog-app
+
+            # Run the new container from the pulled image
+            docker run -d --name my-blog-app -p 6000:4000 hothanhtien/my-blog-app:latest
