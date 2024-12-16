@@ -41,9 +41,8 @@ jobs:
             cd BE_Blog
 
             chmod +x start.sh 
-
             ./start.sh
-            
+
             docker compose down --volumes --remove-orphans
            
             docker compose build --no-cache
