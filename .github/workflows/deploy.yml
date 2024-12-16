@@ -28,7 +28,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Bước 5: Build and push image lên Docker Hub
+      # Bước 5: Build and push image lên Dker Hub
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
