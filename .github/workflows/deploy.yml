@@ -29,7 +29,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: hothanhtien/my-blog-app:latest
+          tags: hothanhtien/my-blog-app:${{ github.sha }}
 
       - name: Deploy with Docker Compose
         uses: appleboy/ssh-action@master
@@ -39,7 +39,9 @@ jobs:
           password: Tien123123
           script: |
             cd BE_Blog
-            docker compose down --rmi all 
-            docker compose pull 
-            docker compose down 
-            docker compose up -d --build 
+            # Dừng và xóa tất cả container và volume
+            docker compose down --volumes --remove-orphans
+            # Xây dựng lại image từ mã nguồn mới
+            docker compose build --no-cache
+            # Khởi động lại các container với các image mới
+            docker compose up -d
