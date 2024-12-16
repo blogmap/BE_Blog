@@ -24,7 +24,7 @@ jobs:
 
     - name: Add SSH known hosts
       run: ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-
+    #ok
     - name: Deploy application
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
