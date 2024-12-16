@@ -9,26 +9,21 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      # Lấy mã nguồn từ repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Đăng nhập vào Docker Hub
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Thiết lập QEMU cho build đa nền tảng (nếu cần)
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
-      # Thiết lập Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Build và push image lên Docker Hub
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -36,7 +31,6 @@ jobs:
           push: true
           tags: hothanhtien/my-blog-app:latest
 
-      # SSH vào server và triển khai bằng Docker Compose
       - name: Deploy with Docker Compose
         uses: appleboy/ssh-action@master
         with:
