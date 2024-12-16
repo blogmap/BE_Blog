@@ -17,14 +17,17 @@ jobs:
       run: mkdir -p ~/.ssh
 
     - name: Add SSH private key
-      run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+      run: echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
 
     - name: Set permissions for SSH private key
       run: chmod 600 ~/.ssh/id_rsa
 
     - name: Add SSH known hosts
       run: ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-    #ok
+
+    - name: Test SSH connection
+      run: ssh -v -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} "echo 'SSH connection successful'"
+
     - name: Deploy application
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
