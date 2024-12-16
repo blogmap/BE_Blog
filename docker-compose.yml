@@ -13,9 +13,7 @@ services:
       - postgres_data:/var/lib/postgresql/data 
 
   app:
-    build:
-      context: .  
-      dockerfile: Dockerfile  
+    image: hothanhtien/my-blog-app:latest
     container_name: my-blog-app
     ports:
       - "6000:4000" 
