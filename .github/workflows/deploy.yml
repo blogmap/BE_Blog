@@ -39,6 +39,6 @@ jobs:
           password: Tien123123
           script: |
             cd BE_Blog
-            docker-compose pull 
-            docker-compose down 
-            docker-compose up -d --build 
+            docker compose pull 
+            docker compose down 
+            docker compose up -d --build 
