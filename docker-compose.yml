@@ -24,6 +24,7 @@ services:
       DB_USER: postgres
       DB_PASS: hothanhtienqb123
       DB_NAME: mydatabase
+      JWT_SECRET: 12345
     depends_on:
       - postgresNew 
 
