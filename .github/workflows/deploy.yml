@@ -13,15 +13,21 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Setup SSH
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Create SSH directory
+      run: mkdir -p ~/.ssh
+
+    - name: Add SSH private key
+      run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+
+    - name: Set permissions for SSH private key
+      run: chmod 600 ~/.ssh/id_rsa
+
+    - name: Add SSH known hosts
+      run: ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
     - name: Deploy application
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
-          # Đi đến thư mục của ứng dụng
           cd /path/to/your/project
 
           git reset --hard
