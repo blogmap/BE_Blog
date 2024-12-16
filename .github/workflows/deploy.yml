@@ -3,36 +3,49 @@ name: Deploy to Server
 on:
   push:
     branches:
-      - master  
+      - master  # Chạy khi có push lên nhánh master
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+    # 1. Checkout code từ repository
     - name: Checkout code
       uses: actions/checkout@v3
 
+    # 2. Tạo thư mục SSH nếu chưa có
     - name: Create SSH directory
       run: mkdir -p ~/.ssh
 
+    # 3. Thêm private key vào SSH
     - name: Add SSH private key
       run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
 
+    # 4. Cấp quyền cho SSH private key
     - name: Set permissions for SSH private key
       run: chmod 600 ~/.ssh/id_rsa
 
+    # 5. Thêm SSH known hosts để tránh lỗi xác thực host
     - name: Add SSH known hosts
       run: ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
+    # 6. Kiểm tra kết nối SSH
+    - name: Test SSH connection
+      run: ssh -T -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} 'echo "SSH connection successful"'
+
+    # 7. Deploy ứng dụng lên server
     - name: Deploy application
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
+        ssh -T -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
+          # Đi đến thư mục của ứng dụng
           cd /path/to/your/project
 
+          # Cập nhật mã nguồn mới nhất từ GitHub
           git reset --hard
           git pull origin master
 
+          # Dừng và khởi động lại docker-compose
           docker-compose down
           docker-compose up -d --build
         EOF
