@@ -18,6 +18,7 @@ const app = express();
 app.use(cookieParser());
 app.use(cors());
 app.use(bodyParser.json());
+
 app.get('/hello', (req, res) => {
   res.json({ message: 'world' });
 });
@@ -37,8 +38,8 @@ AppDataSource.initialize()
     }
 
     console.log('ok');
-    server.listen(4000, () => {
-      console.log('Server is running on port 4000');
+    server.listen(4001, () => {
+      console.log('Server is running on port 4001');
     });
   })
   .catch((error) => console.log('Error initializing data source:', error));

@@ -3,21 +3,27 @@ import { createPost_Ser, deletePost_Ser, unDownVotePost_Ser, unUpVotePost_Ser, u
 import ResponseBuilder from "../../handler/responseBuilder";
 
 export const createPost = async (req: Request, res: Response) => {
+    console.log('1')
     try {
-        const userID = req.user?.id;
-        
-        const user = await createPost_Ser({ ...req.body, userId: userID }); 
-        
-        return ResponseBuilder.Ok(res, user);
-        
+      const userID = req.user?.id;
+      console.log('controllẻ', req.file)
+      const postData = {
+        ...req.body,
+        imageUrl: req.body.cloudinaryUrl,  // Lưu URL ảnh đã upload vào database
+        userId: userID,
+      };
+  
+      const post = await createPost_Ser(postData);
+  
+      return ResponseBuilder.Ok(res, post);
     } catch (e: unknown) {
-        if (e instanceof Error) {
-            return ResponseBuilder.BadRequest(res, e.message);
-        } else {
-            return ResponseBuilder.InternalServerError(res, 'Unexpected error');
-        } 
+      if (e instanceof Error) {
+        return ResponseBuilder.BadRequest(res, e.message);
+      } else {
+        return ResponseBuilder.InternalServerError(res, 'Unexpected error');
+      }
     }
-};
+  };
 
 export const deletePost = async (req: Request, res: Response) => {
     try {

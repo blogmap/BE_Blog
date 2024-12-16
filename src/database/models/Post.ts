@@ -1,34 +1,47 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Unique, OneToMany, JoinColumn, ManyToMany, JoinTable, ManyToOne } from "typeorm"
-import User from "./User"
-import { userInfo } from "os"
-import Comment from "./Comment"
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    BaseEntity,
+    ManyToOne,
+    ManyToMany,
+    OneToMany,
+    JoinTable,
+} from "typeorm";
+import User from "./User";
+import Comment from "./Comment";
 
 @Entity()
-export default class Post {
+export default class Post extends BaseEntity {
     @PrimaryGeneratedColumn()
-    id: number  
+    id: number;
 
-    @ManyToOne(()=> User, (user) => user.posts, { onDelete: "CASCADE"})
-    user: User
-
-    @Column()
-    title: string
+    @ManyToOne(() => User, (user) => user.posts, { onDelete: "CASCADE" })
+    user: User;
 
     @Column()
-    body: string
+    title: string;
 
-    @Column({default: 0})
-    upvote: number
+    @Column()
+    body: string;
 
-    @Column({default: 0})
-    downvote: number
+    @Column({ default: 0 })
+    upvote: number;
 
-    @ManyToMany(()=> User, (user)=> user.upVotedPost, { onDelete: "CASCADE"})
-    upVotedUsers:Array<User>
+    @Column({ default: 0 })
+    downvote: number;
 
-    @ManyToMany(() => User, (user)=> user.downVotedPost, { onDelete: "CASCADE"}) 
-    downVotedUsers: Array<User>
+    @ManyToMany(() => User, (user) => user.upVotedPost, { onDelete: "CASCADE" })
+    @JoinTable() // Bảng trung gian để quản lý nhiều-nhiều
+    upVotedUsers: User[];
+
+    @ManyToMany(() => User, (user) => user.downVotedPost, { onDelete: "CASCADE" })
+    @JoinTable() // Bảng trung gian để quản lý nhiều-nhiều
+    downVotedUsers: User[];
 
     @OneToMany(() => Comment, (comment) => comment.post, { onDelete: "CASCADE" })
-    comments: Array<Comment>;
+    comments: Comment[];
+
+    @Column({ nullable: true }) // Thêm cột để lưu URL ảnh, cho phép null nếu không có ảnh
+    imageUrl: string;
 }
