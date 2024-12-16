@@ -38,8 +38,8 @@ AppDataSource.initialize()
     }
 
     console.log('ok');
-    server.listen(4001, () => {
-      console.log('Server is running on port 4001');
+    server.listen(4000, () => {
+      console.log('Server is running on port 4000');
     });
   })
   .catch((error) => console.log('Error initializing data source:', error));
