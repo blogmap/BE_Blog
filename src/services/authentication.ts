@@ -1,6 +1,9 @@
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
 import { Request } from 'express';
+import dotenv from 'dotenv';
 
+// Nạp biến môi trường từ tệp .env
+dotenv.config();
 interface User {
   id: string;
 }
