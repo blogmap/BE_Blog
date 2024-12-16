@@ -8,24 +8,29 @@ const postRepository = AppDataSource.getRepository(Post);
 import { application, Response } from "express"; // Import Response
 
 export const createPost_Ser = async (data: any) => {
- 
+    const postRepository = AppDataSource.getRepository(Post); // Lấy repository của Post
+  
+    // Tìm người dùng với userId
     const user = await AppDataSource.getRepository(User).findOne({
-        where: { id: data.userId }, // Lấy userId từ data
+      where: { id: data.userId },
     });
-
+  
     if (!user) {
-        throw new Error("User not found");
+      throw new Error("User not found"); // Nếu không tìm thấy người dùng, throw lỗi
     }
+  
+    // Tạo mới một instance của Post
     const newPost = new Post();
-    newPost.title = data.title;
-    newPost.body = data.body;
-    newPost.user = user; // Liên kết bài viết với người dùng
-
+    newPost.title = data.title; // Gán title cho bài viết
+    newPost.body = data.body; // Gán body cho bài viết
+    newPost.imageUrl = data.imageUrl; // Lưu URL ảnh từ Cloudinary vào imageUrl
+    newPost.user = user; // Gán người dùng tạo bài viết
+  
     // Lưu bài viết vào cơ sở dữ liệu
     await postRepository.save(newPost);
-    
+  
     return newPost; // Trả về bài viết đã tạo
-};
+  };
 
 export const deletePost_Ser = async (data: any) => {
     try {
