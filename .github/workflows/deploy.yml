@@ -38,8 +38,7 @@ jobs:
           username: tien
           password: Tien123123
           script: |
-            echo "Deploying to server..."
-
+            git pull
             cd BE_Blog
 
             docker pull hothanhtien/my-blog-app:latest
@@ -47,5 +46,4 @@ jobs:
             docker-compose down
 
             docker-compose up -d
-            
-            echo "Deployment completed!"
+
