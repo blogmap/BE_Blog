@@ -32,16 +32,16 @@ export default class Post extends BaseEntity {
     downvote: number;
 
     @ManyToMany(() => User, (user) => user.upVotedPost, { onDelete: "CASCADE" })
-    @JoinTable() // Bảng trung gian để quản lý nhiều-nhiều
+    @JoinTable() 
     upVotedUsers: User[];
 
     @ManyToMany(() => User, (user) => user.downVotedPost, { onDelete: "CASCADE" })
-    @JoinTable() // Bảng trung gian để quản lý nhiều-nhiều
+    @JoinTable() 
     downVotedUsers: User[];
 
     @OneToMany(() => Comment, (comment) => comment.post, { onDelete: "CASCADE" })
     comments: Comment[];
 
-    @Column({ nullable: true }) // Thêm cột để lưu URL ảnh, cho phép null nếu không có ảnh
+    @Column({ nullable: true }) 
     imageUrl: string;
 }
