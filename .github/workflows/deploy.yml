@@ -38,10 +38,13 @@ jobs:
           username: tien
           password: Tien123123
           script: |
-            git pull
             cd BE_Blog
 
+            git pull
+
             docker pull hothanhtien/my-blog-app:latest
+            
+            docker rm hothanhtien/my-blog-app
             
             docker-compose down
 
