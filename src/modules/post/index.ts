@@ -10,7 +10,7 @@ import { uploadToCloudinary, upload } from "../../middlewares/uploadIMG"; // Mid
 const postRouter = Router();
 
 postRouter.get("/", async (req, res) => {
-  res.send("ok con de3");
+  res.send("Test variable");
 });
 
 postRouter.post(
