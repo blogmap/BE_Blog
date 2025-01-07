@@ -29,7 +29,7 @@ export default class Post extends BaseEntity {
     upvote: number;
 
     @Column({ default: 0 })
-    downvote: number;
+    downvote: number;   
 
     @ManyToMany(() => User, (user) => user.upVotedPost, { onDelete: "CASCADE" })
     @JoinTable() 

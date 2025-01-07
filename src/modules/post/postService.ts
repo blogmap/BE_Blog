@@ -1,35 +1,32 @@
 import { AppDataSource } from "../../database/config";
-import Post from "../../database/models/Post"; // Nhập mô hình Post
-import User from "../../database/models/User"; // Nhập mô hình User
+import Post from "../../database/models/Post"; 
+import User from "../../database/models/User"; 
 import Comment from "../../database/models/Comment";
 import ResponseBuilder from "../../handler/responseBuilder";
 import MessageCodes from "../../../src/messageCodes"
 const postRepository = AppDataSource.getRepository(Post);
-import { application, Response } from "express"; // Import Response
+import { application, Response } from "express"; 
 
 export const createPost_Ser = async (data: any) => {
-    const postRepository = AppDataSource.getRepository(Post); // Lấy repository của Post
+    const postRepository = AppDataSource.getRepository(Post); 
   
-    // Tìm người dùng với userId
     const user = await AppDataSource.getRepository(User).findOne({
       where: { id: data.userId },
     });
   
     if (!user) {
-      throw new Error("User not found"); // Nếu không tìm thấy người dùng, throw lỗi
+      throw new Error("User not found"); 
     }
   
-    // Tạo mới một instance của Post
     const newPost = new Post();
-    newPost.title = data.title; // Gán title cho bài viết
-    newPost.body = data.body; // Gán body cho bài viết
-    newPost.imageUrl = data.imageUrl; // Lưu URL ảnh từ Cloudinary vào imageUrl
-    newPost.user = user; // Gán người dùng tạo bài viết
+    newPost.title = data.title; 
+    newPost.body = data.body;
+    newPost.imageUrl = data.imageUrl; 
+    newPost.user = user; 
   
-    // Lưu bài viết vào cơ sở dữ liệu
     await postRepository.save(newPost);
   
-    return newPost; // Trả về bài viết đã tạo
+    return newPost; 
   };
 
 export const deletePost_Ser = async (data: any) => {
