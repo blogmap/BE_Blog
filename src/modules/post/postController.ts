@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createPost_Ser, deletePost_Ser, unDownVotePost_Ser, unUpVotePost_Ser, upDownVotePost_Ser, upUpVotePost_Ser, getAllPost_Ser } from "./postService";
+import { createPost_Ser,editPost_Ser, deletePost_Ser, unDownVotePost_Ser, unUpVotePost_Ser, upDownVotePost_Ser, upUpVotePost_Ser, getAllPost_Ser } from "./postService";
 import ResponseBuilder from "../../handler/responseBuilder";
 
 export const createPost = async (req: Request, res: Response) => {
@@ -24,6 +24,31 @@ export const createPost = async (req: Request, res: Response) => {
       }
     }
   };
+
+  export const editPost = async (req: Request, res: Response) => {
+    try {
+        const userID = req.user?.id;
+        const postId = req.params.id;
+
+        console.log('url', req.body.cloudinaryUrl)
+
+        const updatedData = {
+            ...req.body,
+            imageUrl: req.body.cloudinaryUrl || null, // Nếu có ảnh mới
+            userId: userID,
+        };
+
+        const updatedPost = await editPost_Ser(postId, updatedData);
+
+        return ResponseBuilder.Ok(res, updatedPost);
+    } catch (e: unknown) {
+        if (e instanceof Error) {
+            return ResponseBuilder.BadRequest(res, e.message);
+        } else {
+            return ResponseBuilder.InternalServerError(res, 'Unexpected error');
+        }
+    }
+};
 
 export const deletePost = async (req: Request, res: Response) => {
     try {

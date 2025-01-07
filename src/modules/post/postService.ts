@@ -44,6 +44,38 @@ export const createPost_Ser = async (data: any) => {
     return newPost; 
   };
 
+export const editPost_Ser = async (postId: string, data: any) => {
+    const postRepository = AppDataSource.getRepository(Post);
+    const postIdNumber = parseInt(postId, 10);
+    // Tìm bài viết
+    const existingPost = await postRepository.findOne({
+        where: { id: postIdNumber },
+        relations: ['user'],
+    });
+
+    if (!existingPost) {
+        throw new Error("Post not found");
+    }
+
+    // Kiểm tra quyền chỉnh sửa
+    const dataInt = parseInt(data.userId, 10)
+    console.log(existingPost.user.id, dataInt)
+    if (existingPost.user.id !== dataInt) {
+        throw new Error("Unauthorized to edit this post");
+    }
+
+    // Cập nhật dữ liệu
+
+    console.log('dataimage', data.imageUrl)
+    existingPost.title = data.title || existingPost.title;
+    existingPost.body = data.body || existingPost.body;
+    existingPost.imageUrl = data.imageUrl;
+
+    await postRepository.save(existingPost);
+
+    return existingPost;
+};
+
 export const deletePost_Ser = async (data: any) => {
     try {
         console.log('id post', data.postid, data.userId)
