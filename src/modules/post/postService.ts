@@ -6,7 +6,7 @@ import ResponseBuilder from "../../handler/responseBuilder";
 import MessageCodes from "../../../src/messageCodes"
 const postRepository = AppDataSource.getRepository(Post);
 import { application, Response } from "express"; 
-
+import axios from 'axios';
 export const createPost_Ser = async (data: any) => {
     const postRepository = AppDataSource.getRepository(Post); 
   
@@ -25,6 +25,21 @@ export const createPost_Ser = async (data: any) => {
     newPost.user = user; 
   
     await postRepository.save(newPost);
+    console.log('postid', newPost.id.toString());
+    console.log('userid', user.id.toString());
+
+    try {
+        await axios.post('https://ai.maind.blog/add', {
+            id: newPost.id.toString(),
+            title: newPost.title,
+            content: newPost.body,
+            author: user.id.toString(),
+            created: Date.now()
+        });
+    } catch (qdrantError) {
+        console.error('Failed to sync post with Qdrant:', qdrantError);
+        throw new Error('Post created but failed to sync with Qdrant');
+    }
   
     return newPost; 
   };
