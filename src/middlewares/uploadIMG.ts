@@ -10,7 +10,8 @@ export const uploadToCloudinary = async (req: Request, res: Response, next: Next
   try {
     const file = req.file; 
     if (!file) {
-      return next(new Error('No image file provided'));
+      req.body.cloudinaryUrl = null;
+      return next(); 
     }
 
     const resizedBuffer: Buffer = await sharp(file.buffer)

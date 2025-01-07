@@ -2,7 +2,7 @@ import { Router } from "express";
 import validate from '../../middlewares/validate';
 import PostSchema from "../../schemas/PostSchema";
 import asyncHandler from "../../middlewares/asyncHandle";
-import { createPost, deletePost, unDownVotePost, unUpVotePost, upDownVotePost, upUpVotePost, getAllPost } from "../post/postController";
+import { createPost,editPost, deletePost, unDownVotePost, unUpVotePost, upDownVotePost, upUpVotePost, getAllPost } from "../post/postController";
 import { authenticateJWT, canAccessBy } from "../../middlewares/authenticateJWT";
 import { PermissionEnum } from "../../common/enums/permissions";
 import { uploadToCloudinary, upload } from "../../middlewares/uploadIMG"; // Middleware upload ảnh lên Cloudinary
@@ -22,6 +22,16 @@ postRouter.post(
    validate(PostSchema.CreatePostValidation),
    asyncHandler(createPost) 
 );
+
+postRouter.put(
+  "/editPost/:id",
+  authenticateJWT, 
+  // canAccessBy(PermissionEnum.CanEditPost), 
+  upload.single('image'), 
+  uploadToCloudinary,
+  asyncHandler(editPost)
+);
+
 postRouter.post("/deletePost/:id",authenticateJWT, asyncHandler(deletePost))
 
 // vote
