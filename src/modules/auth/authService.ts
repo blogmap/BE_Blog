@@ -1,16 +1,22 @@
 import { AppDataSource } from "../../database/config";
 import User from "../../database/models/User";
+import Role from "../../database/models/Role"
+import Permission from "../../database/models/Permission";
 import { hash } from "../../services/hasher";
 import UserSchema from "../../schemas/UserSchema";
 import { compare } from "../../services/hasher";
 import { mailService } from "../../services/mailService";
 import UserIdentityService  from "../../services/authentication";
+import { Request, Response } from 'express';
 import exp from "constants";
 
 const dotenv = require('dotenv');
 dotenv.config();
 const userRepository = AppDataSource.getRepository(User);
-
+// const userRepository = getRepository(User);
+const roleRepository = AppDataSource.getRepository(Role);
+const permissionRepository = AppDataSource.getRepository(Permission);
+// const roleRepository = AppDataSource.getRepository(Role)
 export const registerUser = async (data: any) => {
   const reqBody = UserSchema.UserValidation.parse(data);
 
@@ -38,6 +44,25 @@ export const registerUser = async (data: any) => {
   user.mail = reqBody.mail;
 
   await userRepository.save(user);
+  
+  const userRole = await roleRepository.findOne({ where: { name: 'user' } });
+  if (!userRole) {
+    throw new Error("Role user not found"); 
+  }
+
+  user.roles = [userRole];
+  await userRepository.save(user);
+
+  // Gán permissions CreatePost và EditPost cho user thông qua role
+  // const createPostPermission = await permissionRepository.findOne({ where: { name: 'CreatePost' } });
+  // const editPostPermission = await permissionRepository.findOne({ where: { name: 'EditPost' } });
+
+  // if (createPostPermission && editPostPermission) {
+  //   userRole.permissions = [createPostPermission, editPostPermission];
+  //   await roleRepository.save(userRole);
+  // }
+
+  // // return res.status(201).json({ message: 'User registered successfully', user: newUser });
   return user;
 };
 

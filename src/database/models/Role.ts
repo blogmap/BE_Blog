@@ -12,7 +12,7 @@ export default class Role{
   @ManyToMany(() => Permission , permissions => permissions.roles, {onDelete:'CASCADE'})
   permissions: Array<Permission>;
   
-  @ManyToMany(() => User, user => user.roles)
+  @ManyToMany(() => User, user => user.roles) 
   users: Array<User>;
   
 }

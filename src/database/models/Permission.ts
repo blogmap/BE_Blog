@@ -14,3 +14,4 @@ export default class Permission {
   roles: Array<Role>;
 
 }
+
