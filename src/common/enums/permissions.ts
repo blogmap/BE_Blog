@@ -14,6 +14,7 @@ export enum PermissionEnum{
 
         CanEditProfile = 'EditProfile',
         CanCreatePost = 'CreatePost',
+        CanEditPost = 'EditPost'
     }
     
     

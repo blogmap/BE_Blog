@@ -26,7 +26,7 @@ postRouter.post(
 postRouter.put(
   "/editPost/:id",
   authenticateJWT, 
-  // canAccessBy(PermissionEnum.CanEditPost), 
+  canAccessBy(PermissionEnum.CanEditPost), 
   upload.single('image'), 
   uploadToCloudinary,
   asyncHandler(editPost)
