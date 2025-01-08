@@ -47,7 +47,7 @@ export const createPost_Ser = async (data: any) => {
 export const editPost_Ser = async (postId: string, data: any) => {
     const postRepository = AppDataSource.getRepository(Post);
     const postIdNumber = parseInt(postId, 10);
-    // Tìm bài viết
+ 
     const existingPost = await postRepository.findOne({
         where: { id: postIdNumber },
         relations: ['user'],
@@ -57,14 +57,12 @@ export const editPost_Ser = async (postId: string, data: any) => {
         throw new Error("Post not found");
     }
 
-    // Kiểm tra quyền chỉnh sửa
     const dataInt = parseInt(data.userId, 10)
     console.log(existingPost.user.id, dataInt)
     if (existingPost.user.id !== dataInt) {
         throw new Error("Unauthorized to edit this post");
     }
 
-    // Cập nhật dữ liệu
 
     console.log('dataimage', data.imageUrl)
     existingPost.title = data.title || existingPost.title;
@@ -72,6 +70,19 @@ export const editPost_Ser = async (postId: string, data: any) => {
     existingPost.imageUrl = data.imageUrl;
 
     await postRepository.save(existingPost);
+
+    try {
+        await axios.patch('https://ai.maind.blog/add', {
+            id: existingPost.id.toString(),
+            title: existingPost.title,
+            content: existingPost.body,
+            author: existingPost.id.toString(),
+            created: Date.now()
+        });
+    } catch (qdrantError) {
+        console.error('Failed to sync update with Qdrant:', qdrantError);
+        throw new Error('Post update but failed to sync with Qdrant');
+    }
 
     return existingPost;
 };
